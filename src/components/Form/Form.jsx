@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 class Form extends Component {
     state = {
      name: '',
-  number: ''
-}
+      number: '',
+  }
     nameFormId = nanoid();
     numberFormId = nanoid();
 
@@ -17,16 +17,16 @@ class Form extends Component {
       handleSubmit = event => {
     event.preventDefault();
           this.props.onSubmit(this.state);
-          this.reser();
+          this.reset();
     }
     
-    reser = () => {
+    reset = () => {
         this.setState({   name: '',
   number: ''})
     }
     
     render() {
-const { name, number } = this.state;
+const { name, number} = this.state;
     return (
        <form onSubmit={this.handleSubmit}>
       <label htmlFor={this.nameFormId}>
@@ -55,8 +55,8 @@ const { name, number } = this.state;
           onChange={this.handleInput}
 />
       </label>
-      <button type="submit">Add contact</button>
-        </form>)
+        <button type="submit">Add contact</button>
+               </form>)
     }
 }
 
