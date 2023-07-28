@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import Form from './Form'
 import ListUpdate from './ListUpdate/ListUpdate'
@@ -63,7 +64,9 @@ class App extends Component {
                }
 };
 
+App.propTypes = {
+  filter: PropTypes.string,
+  contacts: PropTypes.array
+}
+
 export default App;
-
-
-{/* <Filter onChange={this.changeFilter} value={filter} /> */}

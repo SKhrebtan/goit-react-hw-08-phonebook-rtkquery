@@ -1,5 +1,5 @@
 import css from './FilterName.module.css'
-
+import PropTypes from 'prop-types';
 const Filter = ({onChange, value}) => {
     return (
          <label>
@@ -10,6 +10,11 @@ const Filter = ({onChange, value}) => {
                 onChange={onChange} />
         </label>
     )
+}
+
+Filter.propTypes = {
+    onChange: PropTypes.func,
+    value: PropTypes.string
 }
 
 export default Filter;

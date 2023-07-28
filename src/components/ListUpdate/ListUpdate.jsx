@@ -1,4 +1,6 @@
 
+import PropTypes from 'prop-types';
+
 const ListUpdate = ({ options, onDeleteContacts }) => {
     return (
         <ul>
@@ -18,5 +20,11 @@ const ListUpdate = ({ options, onDeleteContacts }) => {
         </ul>
     )
 };
+
+ListUpdate.propTypes = {
+    name: PropTypes.string,
+    number: PropTypes.number,
+    id: PropTypes.string
+}
 
 export default ListUpdate;
