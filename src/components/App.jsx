@@ -10,7 +10,22 @@ class App extends Component {
   state = {
     contacts: [],
     filter: '',
-   }
+  }
+  
+  LOCAL_DATA = 'contacts';
+
+   componentDidMount() {
+    const parsedContacts = JSON.parse(localStorage.getItem(this.LOCAL_DATA))
+    if (parsedContacts) {
+       this.setState({ contacts: parsedContacts })
+    }   
+  }
+    componentDidUpdate(prevPropes, prevState) {
+    const { contacts } = this.state
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem(this.LOCAL_DATA, JSON.stringify(contacts))
+    }
+  }
   
   addUser = ({ name, number }) => {
 
@@ -47,6 +62,7 @@ class App extends Component {
     contacts: contacts.filter(contact => contact.id !== id)
         }))
   }
+ 
 
   render() {
     const { filter } = this.state;
