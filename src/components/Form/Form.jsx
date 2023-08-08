@@ -1,36 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import css from './Form.module.css'
 import { nanoid } from 'nanoid';
 
-class Form extends Component {
-    state = {
-    name: '',
-    number: '',
-  }
-    nameFormId = nanoid();
-    numberFormId = nanoid();
+function Form({onSubmit}) {
+  
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  
+    const nameFormId = nanoid();
+    const numberFormId = nanoid();
 
-    handleInput = event => {
+    const handleInput = event => {
       const { name, value } = event.currentTarget;
-      this.setState({[name]: value,})
+      switch (name) {
+        case 'name': setName(value);
+          break;
+        case 'number': setNumber(value);
+          break;
+        default:
+          console.log('щось пішло не так')
+          
+      }
     }
 
-    handleSubmit = event => {
-          event.preventDefault();
-          this.props.onSubmit(this.state);
-          this.reset();
+    const handleSubmit = event => {
+      event.preventDefault();
+      
+          onSubmit(name, number);
+          reset();
     }
     
-    reset = () => {
-        this.setState({ name: '', number: ''})
+    const reset = () => {
+      setName('');
+      setNumber('');
     }
     
-    render() {
-const { name, number} = this.state;
+
     return (
-      <form onSubmit={this.handleSubmit} className={css.form}>
-      <label htmlFor={this.nameFormId} className={css.label}>
+      <form onSubmit={handleSubmit} className={css.form}>
+      <label htmlFor={nameFormId} className={css.label}>
         Name
       <input
       type="text"
@@ -40,11 +49,11 @@ const { name, number} = this.state;
       title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             className={css.input}
-        id={this.nameFormId}
-        onChange={this.handleInput}
+        id={nameFormId}
+        onChange={handleInput}
 />
       </label>
-      <label htmlFor={this.numberFormId} className={css.label}>
+      <label htmlFor={numberFormId} className={css.label}>
         Number
         <input
         type="tel"
@@ -54,14 +63,14 @@ const { name, number} = this.state;
       title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             className={css.input}
-              id={this.numberFormId}
-          onChange={this.handleInput}
+              id={numberFormId}
+          onChange={handleInput}
 />
       </label>
         <button type="submit" className={css.btn}>Add contact</button>
                </form>)
     }
-}
+
 
 Form.propTypes = {
   name: PropTypes.string,

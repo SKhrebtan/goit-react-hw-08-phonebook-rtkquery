@@ -1,35 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import Form from './Form'
 import ListUpdate from './ListUpdate/ListUpdate'
 import  Filter from './FilterName/FilterName'
 
-class App extends Component {
-
-  state = {
-    contacts: [],
-    filter: '',
-  }
+function useLocalStorage(key, defaultValue) {
+  const [state, setState] = useState(() => JSON.parse(window.localStorage.getItem(key)) ?? defaultValue)
   
-  LOCAL_DATA = 'contacts';
+  useEffect(() => {
+    return window.localStorage.setItem(key, JSON.stringify(state))
+  }, [state, key])
+return [state, setState]
+}
 
-   componentDidMount() {
-    const parsedContacts = JSON.parse(localStorage.getItem(this.LOCAL_DATA))
-    if (parsedContacts) {
-       this.setState({ contacts: parsedContacts })
-    }   
-  }
-    componentDidUpdate(prevPropes, prevState) {
-    const { contacts } = this.state
-    if (prevState.contacts !== contacts) {
-      localStorage.setItem(this.LOCAL_DATA, JSON.stringify(contacts))
-    }
-  }
+function App () {
+  const [contacts, setContacts] = useLocalStorage('contacts',[]);
+  const [filter, setFilter] = useState('');
   
-  addUser = ({ name, number }) => {
+  const addUser = ( name, number ) => {
 
-    if (this.state.contacts.find(contact => contact.name.includes(name))) {
+    if (contacts.find(contact => contact.name.includes(name))) {
       alert('Такий контакт вже існує');
       return
     }
@@ -38,47 +29,34 @@ class App extends Component {
       number,
       id: nanoid(),
     }
-    this.setState(({contacts}) => ({
-      contacts: [contact, ...contacts]
-    }));
-  }
+    setContacts( contacts => [...contacts, contact])
+    }
 
-   changeFilter = (event) => {
-      this.setState({
-        filter: event.currentTarget.value,
-      })
-  }
-
-  getContactBySearch = () => {
-    const { contacts, filter } = this.state;
-    const normalizedFilter = filter.toLowerCase();
+   const changeFilter = (event) => {
+              setFilter(event.currentTarget.value)
     
-    return contacts.filter(contact =>
+  }
+const normalizedFilter = filter.toLowerCase();
+  
+  const filteredContacts = useMemo(() => {
+       return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter))
-  }
-
-  deleteContact = id => {
-    this.setState(({contacts}) => ({
-    contacts: contacts.filter(contact => contact.id !== id)
-        }))
-  }
- 
-
-  render() {
-    const { filter } = this.state;
-    const filteredContacts = this.getContactBySearch();
+ },[normalizedFilter, contacts])
+    
+  const deleteContact = id => {
+    setContacts(contacts => contacts.filter(contact => contact.id !== id)
+        )}  
     
     return (
       <div>
         <h1>Phonebook</h1>
-        <Form onSubmit={this.addUser} />
+        <Form onSubmit={addUser} />
         <h2>Contacts</h2>
-        <Filter onChange={this.changeFilter} value={filter} />
-        <ListUpdate options={filteredContacts} onDeleteContacts={this.deleteContact} />
+        <Filter onChange={changeFilter} value={filter} />
+        <ListUpdate options={filteredContacts} onDeleteContacts={deleteContact} />
       </div>
     )       
-               }
-};
+               };
 
 App.propTypes = {
   filter: PropTypes.string,
