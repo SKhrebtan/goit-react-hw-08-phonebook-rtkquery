@@ -1,7 +1,10 @@
-import css from './ListUpdate.module.css'
+import css from './ListUpdate.module.css';
+import { useDispatch } from 'react-redux';
+import { remove } from '../../redux/store';
 import PropTypes from 'prop-types';
 
 const ListUpdate = ({ options, onDeleteContacts }) => {
+    const dispatch = useDispatch();
     return (
         <ul className={css.list}>
             {options.map(({ name, number, id }) => {
@@ -12,7 +15,7 @@ const ListUpdate = ({ options, onDeleteContacts }) => {
                         </p>
                         <button
                             type="button"
-                            onClick={() => onDeleteContacts(id)}
+                            onClick={() => dispatch(remove(id))}
                             className={css.listBtn}                            >
                             Delete</button>
                     </li>
