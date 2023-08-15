@@ -1,9 +1,10 @@
 import css from './ListUpdate.module.css';
 import { useDispatch } from 'react-redux';
-import { remove } from '../../redux/store';
+import { remove } from '../../redux/myContactsSlice/myContactsSlice';
 import PropTypes from 'prop-types';
 
-const ListUpdate = ({ options, onDeleteContacts }) => {
+const ListUpdate = ({ options }) => {
+  
     const dispatch = useDispatch();
     return (
         <ul className={css.list}>

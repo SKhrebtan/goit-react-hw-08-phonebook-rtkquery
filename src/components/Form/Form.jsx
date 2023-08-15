@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from '../../redux/store';
+import { add, getContacts } from '../../redux/myContactsSlice/myContactsSlice';
 import css from './Form.module.css'
 import { nanoid } from 'nanoid';
 
 
+
 function Form() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts)
+  const contacts = useSelector(getContacts)
   console.log(contacts)
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -31,15 +32,15 @@ function Form() {
 
     const handleSubmit = event => {
       event.preventDefault();
-            const contact = {
+            const newContact = {
       name,
       number,
       id: nanoid(),
       }
-      if (contacts.find(contact => contact.name.includes(contact.name))) {
+      if (contacts.find(contact => contact.name.includes(newContact.name))) {
         return alert('ay, такий контакт вже існує')
       }
-      dispatch(add(contact))
+      dispatch(add(newContact))
           reset();
     }
     

@@ -4,26 +4,21 @@ import { useSelector} from 'react-redux';
 import Form from './Form'
 import ListUpdate from './ListUpdate/ListUpdate';
 import Filter from './FilterName/FilterName';
-
-// function useLocalStorage(key, defaultValue) {
-//   const [state, setState] = useState(() => JSON.parse(window.localStorage.getItem(key)) ?? defaultValue)
-  
-//   useEffect(() => {
-//     return window.localStorage.setItem(key, JSON.stringify(state))
-//   }, [state, key])
-// return [state, setState]
-// }
+import { getContacts } from '../redux/myContactsSlice/myContactsSlice';
+import { getFilter } from '../redux/myFilterSlice/myFilterSlice';
 
 function App() {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter.value )
- 
-const normalizedFilter = filter.toLowerCase();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter)
+   
+  const normalizedFilter = filter.toLowerCase();
   
   const filteredContacts = useMemo(() => {
-       return contacts.filter(contact =>
+    if (contacts) { 
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter))
- },[normalizedFilter, contacts])
+  }
+},[normalizedFilter, contacts])
     
     
     return (
