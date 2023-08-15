@@ -1,14 +1,27 @@
 import css from './ListUpdate.module.css';
-import { useDispatch } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { remove } from '../../redux/myContactsSlice/myContactsSlice';
+import { getContacts } from '../../redux/myContactsSlice/myContactsSlice';
+import { getFilter } from '../../redux/myFilterSlice/myFilterSlice';
 import PropTypes from 'prop-types';
 
-const ListUpdate = ({ options }) => {
+const ListUpdate = () => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter)
+   
+  const normalizedFilter = filter.toLowerCase();
   
+  const filteredContacts = useMemo(() => {
+    if (contacts) { 
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter))
+  }
+},[normalizedFilter, contacts])
     const dispatch = useDispatch();
     return (
         <ul className={css.list}>
-            {options.map(({ name, number, id }) => {
+            {filteredContacts.map(({ name, number, id }) => {
                 return (
                     <li key={id} className={css.item}>
                         <p className={css.text}>
