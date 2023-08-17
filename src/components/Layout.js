@@ -1,13 +1,17 @@
 import { Outlet } from 'react-router-dom';
-import { AppBar } from './AppBar/AppBar';
+import { MyAppBar } from './AppBar/AppBar';
 import { Suspense } from 'react';
+import {Box} from '@mui/material';
 
 export const Layout = () => {
   return (
     <div >
-      <AppBar />
+      <MyAppBar />
  <Suspense fallback={null}>
-      <Outlet />
+        <Box sx={{padding: '20px'}}>
+          <Outlet />
+        </Box>
+      
 </Suspense>
     </div>
   );

@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import { contactsAPI } from 'redux/contactsThunk';
 import { useMySelectors } from 'components/hooks';
+import { Box, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import css from './Form.module.css';
 
@@ -49,37 +50,66 @@ function Form() {
 
     return (
       <form onSubmit={handleSubmit} className={css.form}>
-      <label htmlFor={nameFormId} className={css.label}>
-        Name
-      <input
-      type="text"
-       name="name"
-      value={name}
-     pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-      title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+         <Box sx={{ padding: '20px', display: 'flex', gap: '20px', marginBottom: '20px' }}>
+        <TextField
+          id="outlined-basic"
+          label="Name"
+          variant="outlined"
+          type="text"
+          name="name"
+          value={name}
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            className={css.input}
-        id={nameFormId}
-        onChange={handleInput}
-/>
-      </label>
-      <label htmlFor={numberFormId} className={css.label}>
-        Number
-        <input
-        type="tel"
-         name="number"
+          myid={nameFormId}
+         onChange={handleInput}/>
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          type="tel"
+          name="number"
          value={number}
       pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
       title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            className={css.input}
-              id={numberFormId}
-          onChange={handleInput}
-/>
-      </label>
-        <button type="submit" className={css.btn}>Add contact</button>
+            myid={numberFormId}
+          onChange={handleInput}/>
+        
+
+          <button type="submit" className={css.btn}>Add contact</button>
+          </Box>
                </form>)
-    }
+}
+    
+//       <label htmlFor={nameFormId} className={css.label}>
+//         Name
+//       <input
+//       type="text"
+//        name="name"
+//       value={name}
+//      pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+//       title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+//             required
+//             className={css.input}
+//         id={nameFormId}
+//         onChange={handleInput}
+// />
+//       </label>
+//       <label htmlFor={numberFormId} className={css.label}>
+//         Number
+//         <input
+//         type="tel"
+//          name="number"
+//          value={number}
+//       pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+//       title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+//             required
+//             className={css.input}
+//               id={numberFormId}
+//           onChange={handleInput}
+// />
+//       </label>
 
 
 Form.propTypes = {

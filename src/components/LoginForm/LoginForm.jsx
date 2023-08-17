@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { authAPI } from 'redux/auth';
-
+import { Box, TextField, Button } from '@mui/material';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -16,18 +16,61 @@ export const LoginForm = () => {
     );
     form.reset();
   };
-
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <label >
-        Email
-        <input type="email" name="email" />
-      </label>
-      <label >
-        Password
-        <input type="password" name="password" />
-      </label>
-      <button type="submit">Log In</button>
+    <form onSubmit={handleSubmit}>
+      <Box sx={{padding: '20px', display: 'flex', gap: '20px', marginBottom: '20px'}}>
+        <TextField id="outlined-basic" label="Email" variant="outlined" type="email" name="email" />
+        <TextField id="outlined-basic" label="Password" variant="outlined" type="password" name="password" />
+        <Button sx={{width: '200px', height: '56px'}} variant="contained" type="submit">Log In</Button>
+      </Box>
+      
+      
     </form>
-  );
-};
+  )
+}
+
+//   return (
+//     <form onSubmit={handleSubmit} autoComplete="off">
+//       <label >
+//         Email
+//         <input type="email" name="email" />
+//       </label>
+//       <label >
+//         Password
+//         <input type="password" name="password" />
+//       </label>
+//       <button type="submit">Log In</button>
+//     </form>
+//   );
+// };
+//  <Box
+//         component="form"
+//         sx={{
+         
+//       }}
+//       onSubmit={handleSubmit}
+//       autoComplete="off"
+//     >
+//       <Box
+//         component="label"
+//       >
+//         Email
+//         <Box
+//           component="input"
+//           type="email"
+//           name="email" />
+//       </Box>
+//       <Box
+//         component="label"
+//       >
+//         Password
+//         <Box
+//           component="input"
+//           type="Password"
+//           name="Password" />
+//       </Box>
+//       <Box
+//         component="button"
+//         type="submit"
+//       >Log In</Box>
+//       </Box>
