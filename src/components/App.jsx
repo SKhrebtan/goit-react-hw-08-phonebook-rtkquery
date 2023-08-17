@@ -1,19 +1,27 @@
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import  Register from 'pages/Register';
+import  Login from 'pages/Login';
+import  Contacts from 'pages/Contacts'
 import PropTypes from 'prop-types';
-import Form from './Form'
-import ListUpdate from './ListUpdate/ListUpdate';
-import Filter from './FilterName/FilterName';
+import { refreshUser } from 'redux/auth/operations';
 
 
 function App() {
-     
+  const dispatch = useDispatch();
+       useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
     return (
-      <div>
-        <h1>Phonebook</h1>
-        <Form/>
-        <h2>Contacts</h2>
-        <Filter/>
-        <ListUpdate />
-      </div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contacts" element={<Contacts />} />
+        </Route>
+     </Routes>
     )       
                };
 

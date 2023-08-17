@@ -1,27 +1,30 @@
 import css from './ListUpdate.module.css';
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { remove } from '../../redux/myContactsSlice/myContactsSlice';
-import { getContacts } from '../../redux/myContactsSlice/myContactsSlice';
+import { fetchContactsThunk, deleteContactThunk } from 'redux/contactsThunk/contactsThunk';
+import { getContacts } from 'redux/auth/selectors';
 import { getFilter } from '../../redux/myFilterSlice/myFilterSlice';
 import PropTypes from 'prop-types';
 
 const ListUpdate = () => {
-  const contacts = useSelector(getContacts);
+    const dispatch = useDispatch();
+  const { items, isLoading, error } = useSelector(getContacts);
   const filter = useSelector(getFilter)
-   
+   useEffect(() => {
+        dispatch(fetchContactsThunk());
+    }, [dispatch]);
   const normalizedFilter = filter.toLowerCase();
   
   const filteredContacts = useMemo(() => {
-    if (contacts) { 
-    return contacts.filter(contact =>
+    if (items) { 
+    return items.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter))
   }
-},[normalizedFilter, contacts])
-    const dispatch = useDispatch();
+},[normalizedFilter, items])
+    
     return (
         <ul className={css.list}>
-            {filteredContacts.map(({ name, number, id }) => {
+            {items.map(({ name, number, id }) => {
                 return (
                     <li key={id} className={css.item}>
                         <p className={css.text}>
@@ -29,7 +32,7 @@ const ListUpdate = () => {
                         </p>
                         <button
                             type="button"
-                            onClick={() => dispatch(remove(id))}
+                            onClick={() => dispatch(deleteContactThunk(id))}
                             className={css.listBtn}                            >
                             Delete</button>
                     </li>
