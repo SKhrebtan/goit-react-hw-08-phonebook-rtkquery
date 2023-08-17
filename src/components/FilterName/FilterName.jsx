@@ -1,10 +1,12 @@
 import css from './FilterName.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { filter, getFilter } from '../../redux/myFilterSlice/myFilterSlice';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { filter } from 'redux/myFilterSlice/myFilterSlice';
+import { useMySelectors } from 'components/hooks';
+
 
 const Filter = () => {
-    const filterValue = useSelector(getFilter);
+    const {filterValue} = useMySelectors();
+    
     const dispatch = useDispatch();
     const changeFilter = (event) => dispatch(filter(event.currentTarget.value));
 
@@ -19,11 +21,6 @@ const Filter = () => {
             />
         </label>
     )
-}
-
-Filter.propTypes = {
-    onChange: PropTypes.func,
-    value: PropTypes.string
 }
 
 export default Filter;

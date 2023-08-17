@@ -1,17 +1,15 @@
 import css from './ListUpdate.module.css';
-import React, { useMemo, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchContactsThunk, deleteContactThunk } from 'redux/contactsThunk/contactsThunk';
-import { getContacts } from 'redux/auth/selectors';
-import { getFilter } from '../../redux/myFilterSlice/myFilterSlice';
-import PropTypes from 'prop-types';
+import { contactsAPI } from 'redux/contactsThunk';
+import { getContacts, getFilter } from 'redux/auth/selectors';
 
 const ListUpdate = () => {
     const dispatch = useDispatch();
   const { items, isLoading, error } = useSelector(getContacts);
   const filter = useSelector(getFilter)
    useEffect(() => {
-        dispatch(fetchContactsThunk());
+        dispatch(contactsAPI.fetchContactsThunk());
     }, [dispatch]);
   const normalizedFilter = filter.toLowerCase();
   
@@ -23,8 +21,10 @@ const ListUpdate = () => {
 },[normalizedFilter, items])
     
     return (
-        <ul className={css.list}>
-            {items.map(({ name, number, id }) => {
+        <div>
+            {isLoading && <h1>Loading...</h1>}
+   <ul className={css.list}>
+            {filteredContacts.map(({ name, number, id }) => {
                 return (
                     <li key={id} className={css.item}>
                         <p className={css.text}>
@@ -32,20 +32,17 @@ const ListUpdate = () => {
                         </p>
                         <button
                             type="button"
-                            onClick={() => dispatch(deleteContactThunk(id))}
+                            onClick={() => dispatch(contactsAPI.deleteContactThunk(id))}
                             className={css.listBtn}                            >
                             Delete</button>
                     </li>
                 )
             })}
-        </ul>
+            </ul>
+            {error && <h1>Something went wrong: {error.message}</h1>}
+        </div>
+     
     )
 };
-
-ListUpdate.propTypes = {
-    name: PropTypes.string,
-    number: PropTypes.number,
-    id: PropTypes.string
-}
 
 export default ListUpdate;

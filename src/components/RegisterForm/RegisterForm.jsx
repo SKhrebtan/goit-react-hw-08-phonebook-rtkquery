@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/operations';
+import { authAPI } from 'redux/auth';
 
 
 export const RegisterForm = () => {
@@ -9,7 +9,7 @@ export const RegisterForm = () => {
     e.preventDefault();
     const form = e.currentTarget;
     dispatch(
-      register({
+      authAPI.register({
         name: form.elements.name.value,
         email: form.elements.email.value,
         password: form.elements.password.value,

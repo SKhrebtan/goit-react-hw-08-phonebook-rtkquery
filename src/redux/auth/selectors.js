@@ -6,4 +6,5 @@ export const getRefreshing = state => state.auth.isRefreshing;
 
 export const getContacts = state => state.contacts;
 
-export const getFilter = state => state.filter.value ;
+export const getFilter = state => state.filter.value;
+

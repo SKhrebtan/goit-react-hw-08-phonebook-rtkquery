@@ -1,39 +1,42 @@
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './Layout';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import  Register from 'pages/Register';
-import  Login from 'pages/Login';
-import  Contacts from 'pages/Contacts'
-import PropTypes from 'prop-types';
-import { refreshUser } from 'redux/auth/operations';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, lazy } from 'react';
+import { PrivateRoute } from 'components/PrivateRoute'
+import { RestrictedRoute } from './RestrictedRoute';
+import { authAPI } from 'redux/auth';
+import { getRefreshing } from 'redux/auth/selectors';
 
+const Home = lazy(() => import('pages/Home'));
+const Register = lazy(() => import('pages/Register'));
+const Login = lazy(() => import('pages/Login'));
+const Contacts = lazy(() => import('pages/Contacts'));
 
 function App() {
+  const isRefreshing = useSelector(getRefreshing);
   const dispatch = useDispatch();
-       useEffect(() => {
-    dispatch(refreshUser());
-  }, [dispatch]);
-    return (
+    useEffect(() => {
+    dispatch(authAPI.refreshUser());
+    }, [dispatch]);
+  
+    return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home/>}/>
+          <Route path="/register" element={
+            <RestrictedRoute redirectTo="/contacts" component={<Register />} />
+          } />
+          <Route path="/login" element={
+            <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+          } />
+          <Route path="/contacts" element={
+            <PrivateRoute redirectTo="/login" component={<Contacts />} />
+          } />
         </Route>
      </Routes>
     )       
                };
 
-App.propTypes = {
-  filter: PropTypes.string,
-  contacts: PropTypes.array
-}
-
 export default App;
-
-  // <h1>Phonebook</h1>
-  //       <Form onSubmit={addUser} />
-  //       <h2>Contacts</h2>
-  //       <Filter onChange={changeFilter} value={filter} />
-  //       <ListUpdate options={filteredContacts} onDeleteContacts={deleteContact} />

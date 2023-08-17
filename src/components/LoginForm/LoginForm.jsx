@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/operations';
+import { authAPI } from 'redux/auth';
 
 
 export const LoginForm = () => {
@@ -9,7 +9,7 @@ export const LoginForm = () => {
     e.preventDefault();
     const form = e.currentTarget;
     dispatch(
-      logIn({
+      authAPI.logIn({
         email: form.elements.email.value,
         password: form.elements.password.value,
       })

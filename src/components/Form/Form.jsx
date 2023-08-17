@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContactThunk } from 'redux/contactsThunk/contactsThunk';
-import { getContacts } from 'redux/auth/selectors';
-import css from './Form.module.css'
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
-
-
+import { useDispatch } from 'react-redux';
+import { contactsAPI } from 'redux/contactsThunk';
+import { useMySelectors } from 'components/hooks';
+import PropTypes from 'prop-types';
+import css from './Form.module.css';
 
 function Form() {
   const dispatch = useDispatch();
-  const {items} = useSelector(getContacts)
- 
+  const { items } = useMySelectors();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   
@@ -27,8 +24,7 @@ function Form() {
           break;
         default:
           console.log('щось пішло не так')
-          
-      }
+          }
     }
 
      const handleSubmit = event => {
@@ -41,7 +37,7 @@ function Form() {
   if (items.find(contact => contact.name.includes(newContact.name))) {
         return alert('ay, такий контакт вже існує')
       }
-      dispatch(addContactThunk(newContact))
+      dispatch(contactsAPI.addContactThunk(newContact))
         
           reset();
     }
@@ -49,8 +45,7 @@ function Form() {
     const reset = () => {
       setName('');
       setNumber('');
-    }
-    
+    }    
 
     return (
       <form onSubmit={handleSubmit} className={css.form}>
