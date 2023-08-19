@@ -1,10 +1,13 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { authAPI } from 'redux/auth';
 import { Box, TextField, Button } from '@mui/material';
-
+import { getError } from 'redux/auth/selectors';
+import { Navigate, useLocation  } from 'react-router-dom';
 export const RegisterForm = () => {
   const dispatch = useDispatch();
-
+  const error = useSelector(getError);
+  const location = useLocation();
+ 
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -19,7 +22,8 @@ export const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+       <form onSubmit={handleSubmit}>
       <Box sx={{ padding: '20px', display: 'flex', gap: '20px', marginBottom: '20px' }}>
         <TextField id="outlined-basic" label="Name" variant="outlined" type="name" name="name" />
         <TextField id="outlined-basic" label="Email" variant="outlined" type="email" name="email" />
@@ -29,7 +33,9 @@ export const RegisterForm = () => {
       
       
     </form>
-    
+     {error && <Navigate to="/notfound" replace={true} state={{ from: location }}/>}
+    </>
+   
   );
 };
 

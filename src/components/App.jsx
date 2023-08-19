@@ -6,11 +6,12 @@ import { PrivateRoute } from 'components/PrivateRoute'
 import { RestrictedRoute } from './RestrictedRoute';
 import { authAPI } from 'redux/auth';
 import { getRefreshing } from 'redux/auth/selectors';
-
+import { NotFound } from 'pages/NotFound';
 const Home = lazy(() => import('pages/Home'));
 const Register = lazy(() => import('pages/Register'));
 const Login = lazy(() => import('pages/Login'));
 const Contacts = lazy(() => import('pages/Contacts'));
+// const NotFound = lazy(() => import('pages/NotFound'));
 
 function App() {
   const isRefreshing = useSelector(getRefreshing);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/contacts" element={
             <PrivateRoute redirectTo="/login" component={<Contacts />} />
           } />
+            <Route path="/notfound" element={<NotFound />} />
         </Route>
      </Routes>
     )       

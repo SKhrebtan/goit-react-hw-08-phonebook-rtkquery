@@ -8,3 +8,7 @@ export const getContacts = state => state.contacts;
 
 export const getFilter = state => state.filter.value;
 
+export const getError = state => state.auth.error;
+
+export const getPending = state => state.auth.pending;
+
