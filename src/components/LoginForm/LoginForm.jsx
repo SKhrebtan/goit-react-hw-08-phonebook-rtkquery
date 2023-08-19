@@ -33,7 +33,7 @@ export const LoginForm = () => {
         <Button sx={{width: '200px', height: '56px'}} variant="contained" type="submit" disabled={isPending}>Log In</Button>
       </Box>
     </form>
-      {error && <Navigate to="/notfound" replace={true} state={{ from: location }} />}
+      {error && <Navigate to="/notfound" replace={true} state={{ from: location, error }} />}
     </>
   
   )

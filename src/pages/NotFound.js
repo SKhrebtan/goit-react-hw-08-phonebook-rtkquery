@@ -1,20 +1,22 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { useDispatch , useSelector} from "react-redux";
-import {  useRef } from "react";
+import { useDispatch } from "react-redux";
+import {  useRef,useEffect } from "react";
 import { clearError } from "redux/auth/slice";
-import { getError } from "redux/auth/selectors";
 
 export const NotFound = () => {
-    const error = useSelector(getError);
     const dispatch = useDispatch();
-    const location = useLocation();
-    const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
-     
+    const { state, state: {error} } = useLocation();
+    const backLinkLocationRef = useRef(state?.from ?? '/login');
+    
+    useEffect(() => {
+          dispatch(clearError())
+    }, [dispatch])
+
     return (
         <div>
             {error === 'Request failed with status code 400' && <h1>Incorrect data inputed</h1>}
             {error === 'Network Error' && <h1>Sorry, Server fallen</h1>}
-            <NavLink to={backLinkLocationRef.current} onClick={() => dispatch(clearError())}>Try Again</NavLink>
+            <NavLink to={backLinkLocationRef.current}>Try Again</NavLink>
         </div>
     )
 }

@@ -33,7 +33,7 @@ export const RegisterForm = () => {
       
       
     </form>
-     {error && <Navigate to="/notfound" replace={true} state={{ from: location }}/>}
+     {error && <Navigate to="/notfound" replace={true} state={{ from: location, error }}/>}
     </>
    
   );
