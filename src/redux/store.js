@@ -23,20 +23,26 @@ const authPersistConfig = {
 };
 
 export const store = configureStore({
-    reducer: {
-        filter: myFilterSlice.reducer,
-        auth: persistReducer(authPersistConfig, authReducer),
-        [contactsApi.reducerPath]: contactsApi.reducer,
+  reducer: {
+    filter: myFilterSlice.reducer,
+    auth: persistReducer(authPersistConfig, authReducer),
+    [contactsApi.reducerPath]: contactsApi.reducer,
   },
-         middleware(getDefaultMiddleware) {
-    return getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-              },
+  middleware: getDefaultMiddleware => [...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    }
+  }), contactsApi.middleware]
+}, applyMiddleware(thunk))
+  //        middleware(getDefaultMiddleware) {
+  //   return getDefaultMiddleware({
+  //     serializableCheck: {
+  //       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+  //             },
     
-    }).concat(contactsApi.middleware);
-  },
-   }, applyMiddleware(thunk))
+  //   }).concat(contactsApi.middleware);
+  // },
+  //  }, applyMiddleware(thunk))
 
  export const persistor = persistStore(store)
 
