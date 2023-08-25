@@ -1,7 +1,6 @@
 import { configureStore, applyMiddleware} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { myFilterSlice } from './myFilterSlice/myFilterSlice';
-import { myContactsSlice } from './contactsThunk/contactsSlice';
 import { authReducer } from 'redux/auth/slice';
 import storage from 'redux-persist/lib/storage';
 import {
@@ -14,6 +13,8 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
+import { contactsApi } from './rtkquerySlice';
+
 
 const authPersistConfig = {
   key: 'auth',
@@ -23,18 +24,19 @@ const authPersistConfig = {
 
 export const store = configureStore({
     reducer: {
-        contacts: myContactsSlice.reducer,
         filter: myFilterSlice.reducer,
         auth: persistReducer(authPersistConfig, authReducer),
+        [contactsApi.reducerPath]: contactsApi.reducer,
   },
          middleware(getDefaultMiddleware) {
     return getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    });
+              },
+    
+    }).concat(contactsApi.middleware);
   },
-}, applyMiddleware(thunk))
+   }, applyMiddleware(thunk))
 
  export const persistor = persistStore(store)
 

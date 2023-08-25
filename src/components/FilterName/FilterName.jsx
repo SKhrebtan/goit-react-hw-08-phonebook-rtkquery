@@ -1,11 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { filter } from 'redux/myFilterSlice/myFilterSlice';
-import { useMySelectors } from 'components/hooks';
+import { getFilter } from 'redux/auth/selectors';
 import { TextField } from '@mui/material';
 
 
 const Filter = () => {
-    const {filterValue} = useMySelectors();
+    const filterValue = useSelector(getFilter);
     const dispatch = useDispatch();
     const changeFilter = (event) => dispatch(filter(event.currentTarget.value));
 

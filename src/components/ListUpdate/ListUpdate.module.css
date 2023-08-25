@@ -15,13 +15,17 @@
 
 .listBtn {
   height: 40px;
-  width: 80px;
+  min-width: 80px;
   border: none;
   background-color: blue;
   border-radius: 4px;
   color: white;
   font-size: 18px;
   cursor: pointer;
+}
+
+.listBtn:disabled {
+  background-color: grey;
 }
 
 .text {

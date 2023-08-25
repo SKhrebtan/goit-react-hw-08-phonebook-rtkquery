@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
-import { contactsAPI } from 'redux/contactsThunk';
-import { useMySelectors } from 'components/hooks';
 import { Box, TextField } from '@mui/material';
+import { useAddContactMutation, useGetContactsQuery } from 'redux/rtkquerySlice';
+import  { toast  } from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import css from './Form.module.css';
 
 function Form() {
-  const dispatch = useDispatch();
-  const { items } = useMySelectors();
+  
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  
+  const [addContact] = useAddContactMutation();
+  const { data } = useGetContactsQuery();
     const nameFormId = nanoid();
     const numberFormId = nanoid();
 
@@ -28,19 +27,29 @@ function Form() {
           }
     }
 
-     const handleSubmit = event => {
-      event.preventDefault();
-            const newContact = {
+  const  handleSubmit = async event => {
+    event.preventDefault();
+    const newContact = {
       name,
       number,
-      id: nanoid(),
-      }
-  if (items.find(contact => contact.name.includes(newContact.name))) {
-        return alert('ay, такий контакт вже існує')
-      }
-      dispatch(contactsAPI.addContactThunk(newContact))
-        
-          reset();
+      id: await nanoid(),
+    }
+    if (data.find(contact => contact.name.includes(newContact.name))) {
+      return alert('ay, такий контакт вже існує')
+    }
+    reset();
+    try {
+      await addContact(newContact);
+     
+    toast.success('Контакт додано', {
+      duration: 4000,
+      position: 'top-right',
+    })
+  
+    } catch {
+      toast.error('Щось пішло не так')
+    }
+  
     }
     
     const reset = () => {
@@ -65,7 +74,7 @@ function Form() {
          onChange={handleInput}/>
         <TextField
           id="outlined-basic"
-          label="Email"
+          label="Number"
           variant="outlined"
           type="tel"
           name="number"
@@ -78,8 +87,8 @@ function Form() {
         
 
           <button type="submit" className={css.btn}>Add contact</button>
-          </Box>
-               </form>)
+        </Box>
+                       </form>)
 }
     
 //       <label htmlFor={nameFormId} className={css.label}>
